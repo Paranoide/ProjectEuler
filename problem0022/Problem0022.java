@@ -20,15 +20,23 @@ public class Problem0022
         
         Collections.sort(namesList);
         
-        System.out.println(namesList);
+        long sum = 0;
+        for (int t = 0; t < namesList.size(); t++)
+        {
+            String name = namesList.get(t);
+            sum += (t+1)*alphabeticalScore(name);
+        }
+        
+        System.out.println(sum);
+        
     }
     
     
     
     
-    private static int alphabeticalScore(String name)
+    private static long alphabeticalScore(String name)
     {
-        int score = 0;
+        long score = 0;
         for (int c = 0; c < name.length(); c++)
         {
             score += (name.charAt(c) - 'A' + 1);
