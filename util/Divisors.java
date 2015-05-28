@@ -10,6 +10,13 @@ import java.util.List;
 public class Divisors
 {
 
+    public static List<Long> getAllProperDivisors(long n)
+    {
+        List<Long> list = getAllDivisors(n);
+        list.remove(n);
+        return list;
+    }
+    
     public static List<Long> getAllDivisors(long n)
     {
         List<Long> divs = new LinkedList<>();
@@ -29,7 +36,6 @@ public class Divisors
         for ( ; t < size; t++)
         {
             div = divs.get(t);
-//            divs.add(n / div);
             divs.add(size+1, n / div);
         }
         
