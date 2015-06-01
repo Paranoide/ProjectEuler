@@ -23,8 +23,16 @@ public class Problem0030
 
     public static void main(String[] args)
     {
+        long sum = 0;
+        for (int t = 2; t < 1000000; t++)
+        {
+            if (isSumOfAPowerOfDigits(t, 5))
+            {
+                sum += t;
+            }
+        }
         
-        
+        System.out.println(sum);
         
     }
     
@@ -37,15 +45,11 @@ public class Problem0030
         int len = String.valueOf(n).length() - 1;
         int digit;
         
-        while (isSum && len > 0)
+        while (isSum && len >= 0)
         {
-            // len = 3
-            // 2345
-            
             int powerToTen = ((int)Math.pow(10, len));
             
             digit = n / powerToTen;
-            // digit = 2
             
             sum += (int)Math.pow(digit, power);
             if (sum > number)
@@ -53,7 +57,7 @@ public class Problem0030
                 isSum = false;
             }
             
-            n -= powerToTen;
+            n -= digit*powerToTen;
             len--;
         }
         
