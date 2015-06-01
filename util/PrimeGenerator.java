@@ -58,7 +58,7 @@ public class PrimeGenerator
         if (!this.primes.isEmpty())
         {
             p = this.primes.get(this.primes.size() - 1);
-            if (p + 1 % 6 == 0)
+            if ((p + 1) % 6 == 0)
             {
                 p++;
             }
