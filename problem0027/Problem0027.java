@@ -24,16 +24,32 @@ public class Problem0027
     {
         long time = System.currentTimeMillis();
 
-        maxPrime = 1000000;
+        maxPrime = 100;
         createSomePrimes(maxPrime);
 
         int a;
-        int b = 100;
-
-        for (a = -999; a < 1000; a++)
+        int b;
+        int currMaxN;
+        int maxN = 0;
+        int maxA = 0;
+        int maxB = 0;
+        
+        for (b = 3; b < 1000; b += 2)
         {
-            System.out.println(maxNForConsecutivePrimes(a, b));
+            for (a = -999; a < 1000; a += 2)
+            {
+                currMaxN = maxNForConsecutivePrimes(a, b);
+                if (currMaxN > maxN)
+                {
+                    maxN = currMaxN;
+                    maxA = a;
+                    maxB = b;
+                }
+            }
         }
+        
+        System.out.println("maxN: " + maxN);
+        System.out.printf("a * b = %d * %d = %d\n", maxA, maxB, maxA*maxB);
 
         System.out.println("Time: " + (System.currentTimeMillis() - time));
     }
@@ -57,6 +73,8 @@ public class Problem0027
 
     private static void createSomePrimes(int n)
     {
+        System.out.printf("Creating primes up to %d ...\n", n);
+        
         List<Long> primes = pg.generatePrimesSmallerThanN(n);
 
         for (int t = currSize; t < primes.size(); t++)
@@ -65,6 +83,8 @@ public class Problem0027
         }
 
         currSize = currPrimes.size();
+        
+        System.out.printf("...done!\n");
     }
 
     private static boolean isPrime(int n)
