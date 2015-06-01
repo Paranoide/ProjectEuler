@@ -7,7 +7,29 @@ import util.PrimeGenerator;
 
 /**
  *
- *
+ * Euler discovered the remarkable quadratic formula:
+ * <pre>
+ * n² + n + 41
+ * </pre>
+ * It turns out that the formula will produce 40 primes for the consecutive
+ * values n = 0 to 39. However, when n = 40, 402 + 40 + 41 = 40(40 + 1) + 41 is
+ * divisible by 41, and certainly when n = 41, 41² + 41 + 41 is clearly
+ * divisible by 41.<br/>
+ * <br/>
+ * The incredible formula n² − 79n + 1601 was discovered, which produces 80
+ * primes for the consecutive values n = 0 to 79. The product of the
+ * coefficients, −79 and 1601, is −126479.<br/>
+ * <br/>
+ * Considering quadratics of the form:
+ * <pre>
+ * n² + an + b, where |a| &lt; 1000 and |b| &lt; 1000
+ * </pre>
+ * where |n| is the modulus/absolute value of n
+ * e.g. |11| = 11 and |−4| = 4.<br/>
+ * <br/>
+ * Find the product of the coefficients, a and b, for the quadratic expression
+ * that produces the maximum number of primes for consecutive values of n,
+ * starting with n = 0.
  *
  * @author Paranoide
  */
@@ -33,7 +55,7 @@ public class Problem0027
         int maxN = 0;
         int maxA = 0;
         int maxB = 0;
-        
+
         for (b = 3; b < 1000; b += 2)
         {
             for (a = -999; a < 1000; a += 2)
@@ -47,9 +69,9 @@ public class Problem0027
                 }
             }
         }
-        
+
         System.out.println("maxN: " + maxN);
-        System.out.printf("a * b = %d * %d = %d\n", maxA, maxB, maxA*maxB);
+        System.out.printf("a * b = %d * %d = %d\n", maxA, maxB, maxA * maxB);
 
         System.out.println("Time: " + (System.currentTimeMillis() - time));
     }
@@ -74,7 +96,7 @@ public class Problem0027
     private static void createSomePrimes(int n)
     {
         System.out.printf("Creating primes up to %d ...\n", n);
-        
+
         List<Long> primes = pg.generatePrimesSmallerThanN(n);
 
         for (int t = currSize; t < primes.size(); t++)
@@ -83,7 +105,7 @@ public class Problem0027
         }
 
         currSize = currPrimes.size();
-        
+
         System.out.printf("...done!\n");
     }
 
