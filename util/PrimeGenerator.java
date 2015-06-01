@@ -1,5 +1,6 @@
 package util;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -13,7 +14,7 @@ import java.util.List;
 public class PrimeGenerator
 {
 
-    private List<Long> primes;
+    private List<Long> primes = new ArrayList<>();;
 
     public PrimeGenerator()
     {
@@ -51,23 +52,38 @@ public class PrimeGenerator
 
     public List<Long> generatePrimesSmallerThanN(int n)
     {
-        primes = new LinkedList<>();
 
-        primes.add(2L);
-        primes.add(3L);
         long p = 0;
 
+        if (!this.primes.isEmpty())
+        {
+            p = this.primes.get(this.primes.size() - 1);
+            if (p + 1 % 6 == 0)
+            {
+                p++;
+            }
+            else
+            {
+                p--;
+            }
+        }
+        else
+        {
+            this.primes.add(2L);
+            this.primes.add(3L);
+        }
+        
         while ((p + 5) < n)
         {
             p += 6;
             if (isPrime(p - 1))
             {
-                primes.add(p - 1);
+                this.primes.add(p - 1);
 //                System.out.println(p-1);
             }
             if (isPrime(p + 1))
             {
-                primes.add(p + 1);
+                this.primes.add(p + 1);
 //                System.out.println(p+1);
             }
         }
@@ -77,8 +93,12 @@ public class PrimeGenerator
         {
             this.primes.remove(size - 1);
         }
+        
+        
+        List<Long> thePrimes = new ArrayList<>();
+        thePrimes.addAll(this.primes);
 
-        return this.primes;
+        return thePrimes;
     }
 
     private boolean isPrime(long n)
