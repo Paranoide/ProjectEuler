@@ -22,14 +22,25 @@ public class Digits
         return (n + a[t]);
     }
     
+    public static long digitListToLong(List<Integer> digits)
+    {
+        int n = 0;
+        for (int i: digits)
+        {
+            n += i;
+            n *= 10;
+        }
+        return (n / 10);
+    }
     
-    public static int[] getDigits(int n)
+    
+    public static int[] getDigits(long n)
     {
         List<Integer> digits = new ArrayList<>();
 
         while (n > 0)
         {
-            digits.add(n % 10);
+            digits.add((int)(n % 10));
             n /= 10;
         }
         Collections.reverse(digits);
@@ -37,13 +48,13 @@ public class Digits
         return listToArray(digits);
     }
     
-    public static List<Integer> getDigitsAsList(int n)
+    public static List<Integer> getDigitsAsList(long n)
     {
         List<Integer> digits = new ArrayList<>();
 
         while (n > 0)
         {
-            digits.add(n % 10);
+            digits.add((int)(n % 10));
             n /= 10;
         }
         Collections.reverse(digits);
