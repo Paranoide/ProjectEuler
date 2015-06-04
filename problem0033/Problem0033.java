@@ -1,11 +1,9 @@
 package problem0033;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
+import static util.Digits.*;
 
 /**
  *
@@ -86,19 +84,6 @@ public class Problem0033
         return a;
     }
 
-    private static int[] getDigits(int n)
-    {
-        List<Integer> digits = new ArrayList<>();
-
-        while (n > 0)
-        {
-            digits.add(n % 10);
-            n /= 10;
-        }
-        Collections.reverse(digits);
-
-        return listToArray(digits);
-    }
 
     private static int[] getIntersection(int[] set1, int[] set2)
     {
@@ -137,18 +122,6 @@ public class Problem0033
         System.arraycopy(digits, index + 1, newDigits, index, len - index - 1);
 
         return arrayToInt(newDigits);
-    }
-
-    private static int arrayToInt(int[] a)
-    {
-        int n = 0;
-        int t;
-        for (t = 0; t < a.length - 1; t++)
-        {
-            n += a[t];
-            n *= 10;
-        }
-        return (n + a[t]);
     }
 
 }
