@@ -20,16 +20,36 @@ public class Problem0034
 
     public static void main(String[] args)
     {
+        long time = System.currentTimeMillis();
+        
+        
         int totalSum = 0;
+//        for (int t = 3; t < 2540161; t++)
+//        {
+//            int sum = Digits.getDigitsAsList(t).stream().map(Problem0034::fac).mapToInt(Integer::intValue).sum();
+//            if (sum == t)
+//            {
+//                totalSum += t;
+//            }
+//        }
         for (int t = 3; t < 2540161; t++)
         {
-            int sum = Digits.getDigitsAsList(t).stream().map(Problem0034::fac).mapToInt(Integer::intValue).sum();
-            if (sum == t)
+            int sum = 0;
+            int n = t;
+            while (n > 0 && sum <= t)
             {
-                totalSum += t;
+                int d = n % 10;
+                sum += fac(d);
+                n /= 10;
+            }
+            if (n == 0 && sum == t)
+            {
+                totalSum += sum;
             }
         }
         System.out.println(totalSum);
+        
+        System.out.println("Time: " + (System.currentTimeMillis() - time));
     }
     
     private static int fac(int n)
