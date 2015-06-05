@@ -14,91 +14,89 @@ import java.util.List;
 public class PrimeGenerator
 {
 
-    private List<Long> primes = new ArrayList<>();;
+    private final List<Long> primes = new ArrayList<>();
+
+    private long p = 0;
+    private int index = 0;
 
     public PrimeGenerator()
     {
-
+        this.primes.add(2L);
+        this.primes.add(3L);
     }
 
     public List<Long> generateFirstNPrimes(int n)
     {
-        primes = new LinkedList<>();
-
-        primes.add(2L);
-        primes.add(3L);
-        int primesFound = 2;
-        long p = 0;
-
-        while (primesFound < n)
+        while (this.primes.size() < n)
         {
-            p += 6;
-            if (isPrime(p - 1))
-            {
-                primes.add(p - 1);
-                primesFound++;
-//                System.out.println(n);
-            }
-            if (isPrime(p + 1))
-            {
-                primes.add(p + 1);
-                primesFound++;
-//                System.out.println(n);
-            }
+            this.calcNextPrime();
         }
 
-        return this.primes;
-    }
 
-    public List<Long> generatePrimesSmallerThanN(int n)
-    {
-
-        long p = 0;
-
-        if (!this.primes.isEmpty())
+        List<Long> thePrimes = new ArrayList<>();
+        thePrimes.addAll(this.primes);
+        int tooMuch = thePrimes.size() - n;
+        while (tooMuch > 0)
         {
-            p = this.primes.get(this.primes.size() - 1);
-            if ((p + 1) % 6 == 0)
-            {
-                p++;
-            }
-            else
-            {
-                p--;
-            }
-        }
-        else
-        {
-            this.primes.add(2L);
-            this.primes.add(3L);
+            thePrimes.remove(thePrimes.size() - 1);
+            tooMuch--;
         }
         
-        while ((p + 5) < n)
+        return thePrimes;
+    }
+
+    public List<Long> generatePrimesSmallerThanN(long n)
+    {
+
+        while (this.primes.get(this.primes.size() - 1) < n)
+        {
+            this.calcNextPrime();
+        }
+
+
+        List<Long> thePrimes = new ArrayList<>();
+        thePrimes.addAll(this.primes);
+
+        int size = thePrimes.size();
+        if (thePrimes.get(size - 2) >= n)
+        {
+            thePrimes.remove(size - 1);
+            thePrimes.remove(size - 2);
+        }
+        else if (thePrimes.get(size - 1) >= n)
+        {
+            thePrimes.remove(size - 1);
+        }
+        
+        return thePrimes;
+    }
+    
+    public long next()
+    {
+        while (this.index >= this.primes.size())
+        {
+            calcNextPrime();
+        }
+        return this.primes.get(index++);
+    }
+    
+    private void calcNextPrime()
+    {
+        boolean done = false;
+        while (!done)
         {
             p += 6;
             if (isPrime(p - 1))
             {
                 this.primes.add(p - 1);
-//                System.out.println(p-1);
+                done = true;
             }
             if (isPrime(p + 1))
             {
                 this.primes.add(p + 1);
-//                System.out.println(p+1);
+                done = true;
             }
         }
-
-        int size = this.primes.size();
-        if (this.primes.get(size - 1) >= n)
-        {
-            this.primes.remove(size - 1);
-        }
-        
-        
-        List<Long> thePrimes = new ArrayList<>();
-        thePrimes.addAll(this.primes);
-
-        return thePrimes;
     }
 
     private boolean isPrime(long n)
