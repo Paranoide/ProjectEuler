@@ -20,7 +20,7 @@ public class Problem0039
 
         int max = 0;
         int theP = 0;
-        int c = 0;
+        int c;
         for (int p = 0; p < 1000; p++)
         {
             c = getPossCount(p);
