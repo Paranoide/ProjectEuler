@@ -47,7 +47,6 @@ public class PrimeGenerator
 
     public List<Long> generatePrimesSmallerThanN(long n)
     {
-
         while (this.primes.get(this.primes.size() - 1) < n)
         {
             this.calcNextPrime();
@@ -80,18 +79,25 @@ public class PrimeGenerator
         return this.primes.get(index++);
     }
     
+    public boolean isPrime(long n)
+    {
+        long sqrt = (long)(Math.sqrt(n) + 1);
+        this.generatePrimesSmallerThanN((long)(sqrt + 1));
+        return this.isPrimeNumber(n);
+    }
+    
     private void calcNextPrime()
     {
         boolean done = false;
         while (!done)
         {
             p += 6;
-            if (isPrime(p - 1))
+            if (isPrimeNumber(p - 1))
             {
                 this.primes.add(p - 1);
                 done = true;
             }
-            if (isPrime(p + 1))
+            if (isPrimeNumber(p + 1))
             {
                 this.primes.add(p + 1);
                 done = true;
@@ -99,7 +105,7 @@ public class PrimeGenerator
         }
     }
 
-    private boolean isPrime(long n)
+    private boolean isPrimeNumber(long n)
     {
 
         long sqrt = (long) Math.sqrt(n);
