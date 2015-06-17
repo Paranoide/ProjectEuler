@@ -24,7 +24,7 @@ public class Digits
     
     public static long digitListToLong(List<Integer> digits)
     {
-        int n = 0;
+        long n = 0;
         for (int i: digits)
         {
             n += i;
@@ -62,6 +62,23 @@ public class Digits
         return digits;
     }
     
+    
+    public static int countDigits(long n)
+    {
+        int count = (n == 0) ? 1 : 0;
+        while (n > 0)
+        {
+            count++;
+            n /= 10;
+        }
+        return count;
+    }
+    
+    
+    
+    
+    
+    
     private static int[] listToArray(List<Integer> list)
     {
         int[] a = new int[list.size()];
@@ -71,4 +88,5 @@ public class Digits
         }
         return a;
     }
+    
 }
