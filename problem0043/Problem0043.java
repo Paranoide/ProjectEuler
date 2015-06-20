@@ -129,19 +129,7 @@ public class Problem0043
                 break;
             case 5:
                 lastTwo = NUMBER[6] * 10 + NUMBER[7];
-                if (lastTwo % 11 == 0)
-                {
-                    if (DIGITS[0])
-                    {
-                        DIGITS[0] = false;
-
-                        NUMBER[5] = 0;
-                        findSolution(rule - 1);
-
-                        DIGITS[0] = true;
-                    }
-                }
-                else if ((500 + lastTwo) % 11 == 0)
+                if ((500 + lastTwo) % 11 == 0)
                 {
                     if (DIGITS[5])
                     {
