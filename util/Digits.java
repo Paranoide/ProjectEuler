@@ -22,6 +22,18 @@ public class Digits
         return (n + a[t]);
     }
     
+    public static long arrayToLong(int[] a)
+    {
+        long n = 0;
+        int t;
+        for (t = 0; t < a.length - 1; t++)
+        {
+            n += a[t];
+            n *= 10;
+        }
+        return (n + a[t]);
+    }
+    
     public static long digitListToLong(List<Integer> digits)
     {
         long n = 0;
