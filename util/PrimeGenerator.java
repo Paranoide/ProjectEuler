@@ -130,7 +130,7 @@ public class PrimeGenerator
 
     public static List<Long> getPrimeFactors(long n)
     {
-        List<Long> factors = new LinkedList<>();
+        List<Long> factors = new ArrayList<>();
 
         long sqrt = (long) Math.sqrt(n);
 
