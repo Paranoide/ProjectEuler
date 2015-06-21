@@ -1,6 +1,5 @@
 package problem0047;
 
-import java.util.Collections;
 import java.util.List;
 import util.PrimeGenerator;
 
