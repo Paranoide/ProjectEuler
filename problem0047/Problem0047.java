@@ -79,11 +79,10 @@ public class Problem0047
     private static int countDistinctPrimeFactors(List<Long> list)
     {
         int count = 0;
-        Long item, lastItem = 0L;
+        Long lastItem = 0L;
 
-        for (Long list1 : list)
+        for (Long item : list)
         {
-            item = list1;
             if (item.compareTo(lastItem) > 0)
             {
                 count++;
