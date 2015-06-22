@@ -19,33 +19,33 @@ public class Problem0050
 
         List<Long> primes = new PrimeGenerator().generatePrimesSmallerThanN(1000000);
 
-        System.out.println(primes.size());
-        System.out.println((primes.size() * (primes.size() + 1)) / 2);
-
         long maxPrime = 0;
         int maxCount = 0;
-        for (int firstIndex = primes.size() - 2; firstIndex >= 0; firstIndex--)
+        for (int currPrimeIndex = primes.size() - 1; currPrimeIndex >= 0; currPrimeIndex--)
         {
             long sum = 0;
-            for (int lastIndex = firstIndex - 1; lastIndex >= 0 && sum < 1000000; lastIndex--)
+            long currPrime = primes.get(currPrimeIndex);
+            int startIndex;
+            int pIndex;
+            
+            for (startIndex = currPrimeIndex - 1; startIndex >= 0; startIndex--)
             {
-                for (int pIndex = firstIndex; pIndex >= lastIndex; pIndex--)
+                for (pIndex = startIndex; pIndex >= 0 && sum < currPrime; pIndex--)
                 {
-                    sum += primes.get(lastIndex);
+                    sum += primes.get(pIndex);
                 }
+                
 
-                int count = lastIndex - firstIndex + 1;
-                if (contains(primes, sum) && count > maxCount)
+                int count = startIndex - pIndex;
+                if (sum == currPrime && count > maxCount)
                 {
                     maxPrime = sum;
                     maxCount = count;
-                    System.out.println(maxPrime);
-                    System.out.println(maxCount);
                 }
                 sum = 0;
             }
 
-            System.out.println(firstIndex);
+//            System.out.println(currPrimeIndex);
 
         }
 
