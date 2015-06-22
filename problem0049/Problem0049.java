@@ -40,26 +40,42 @@ public class Problem0049
 
         List<SortedSet<Long>> allPerms = getAllPrimePermutations(primes);
 
-        List<List<Long>> result = getPermsWithSameDifferences(allPerms);
-        
-        System.out.println(result);
-        
+        Map<Long, List<List<Long>>> result = getPermsWithSameDifferences(allPerms);
+
+        for (List<List<Long>> listlist : result.values())
+        {
+            for (List<Long> list : listlist)
+            {
+                if (!list.contains(1487L))
+                {
+                    System.out.print("Result: ");
+                    for (Long l: list)
+                    {
+                        System.out.print(l);
+                    }
+                    System.out.println();
+                }
+            }
+        }
+
         System.out.println();
         System.out.println("Time: " + (System.currentTimeMillis() - time));
     }
 
-    private static List<List<Long>> getPermsWithSameDifferences(List<SortedSet<Long>> permutations)
+    private static Map<Long, List<List<Long>>> getPermsWithSameDifferences(List<SortedSet<Long>> permutations)
     {
-        List<List<Long>> theResults = new ArrayList<>();
+        Map<Long, List<List<Long>>> theResults = new HashMap<>();
         List<Long> permsList;
         Long diff;
         Integer val;
         Map<Long, Integer> count;
+        List<List<Long>> list;
 
         for (SortedSet<Long> perms : permutations)
         {
             count = new HashMap<>();
             permsList = new ArrayList<>(perms);
+
             for (int a = 0; a < permsList.size() - 1; a++)
             {
                 for (int b = a + 1; b < permsList.size(); b++)
@@ -70,15 +86,18 @@ public class Problem0049
                     {
                         val++;
                         count.put(diff, val);
-                        System.out.println(val + " : " + diff);
                         if (val == 2)
                         {
-                            List<Long> theResult
-                                    = determinePrimesWithSameDifference(permsList, diff, permsList.get(a));
-                            theResults.add(theResult);
-                            System.out.println(perms);
-                            System.out.println(theResult);
-                            System.out.println();
+                            List<List<Long>> theResult
+                                    = determinePrimesWithSameDifference(permsList, diff);
+                            if (theResult.size() > 0)
+                            {
+                                list = theResults.putIfAbsent(diff, theResult);
+                                if (list != null)
+                                {
+                                    list.addAll(theResult);
+                                }
+                            }
                         }
                     }
                 }
@@ -88,33 +107,34 @@ public class Problem0049
         return theResults;
     }
 
-    private static List<Long> determinePrimesWithSameDifference(List<Long> perms, Long diff, Long p)
+    private static List<List<Long>> determinePrimesWithSameDifference(List<Long> thePerms, Long diff)
     {
-        Long first = perms.get(0);
+        List<List<Long>> allLists = new ArrayList<>();
+        List<Long> perms = new ArrayList<>(thePerms);
+
+        Long curr;
         Long last = perms.get(perms.size() - 1);
-        List<Long> result = new ArrayList<>();
 
-        Long l = p - diff;
-        while (l >= first)
+        while (!perms.isEmpty())
         {
-            if (perms.contains(l))
+            List<Long> matches = new ArrayList<>();
+            curr = perms.remove(0);
+            matches.add(curr);
+            curr += diff;
+            while (perms.contains(curr) && curr <= last)
             {
-                result.add(l);
+                matches.add(curr);
+                perms.remove(curr);
+
+                curr += diff;
             }
-            l -= diff;
+            if (matches.size() >= 3)
+            {
+                allLists.add(matches);
+            }
         }
 
-        l = p + diff;
-        while (l <= last)
-        {
-            if (perms.contains(l))
-            {
-                result.add(l);
-            }
-            l += diff;
-        }
-
-        return result;
+        return allLists;
     }
 
     private static List<SortedSet<Long>> getAllPrimePermutations(List<Long> primes)
@@ -140,6 +160,7 @@ public class Problem0049
         SortedSet<Long> perms;
 
         SortedSet<Long> primePerms = new TreeSet<>();
+        primePerms.add(n);
         perms = generatePermutations(n);
         for (Long p : perms)
         {
@@ -149,7 +170,6 @@ public class Problem0049
                 primes.remove(p);
             }
         }
-
         return primePerms;
     }
 
