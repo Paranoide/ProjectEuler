@@ -25,28 +25,33 @@ public class Problem0050
         {
             long sum = 0;
             long currPrime = primes.get(currPrimeIndex);
-            int startIndex;
-            int pIndex;
             
-            for (startIndex = currPrimeIndex - 1; startIndex >= 0; startIndex--)
+            int pIndex;
+
+            int currStartIndex = currPrimeIndex - 1;
+            int actualStartIndex = currStartIndex;
+            
+            while (currStartIndex > 0)
             {
-                for (pIndex = startIndex; pIndex >= 0 && sum < currPrime; pIndex--)
+                for (pIndex = currStartIndex; pIndex >= 0 && sum < currPrime; pIndex--)
                 {
                     sum += primes.get(pIndex);
                 }
                 
 
-                int count = startIndex - pIndex;
+                int count = actualStartIndex - pIndex;
+                
                 if (sum == currPrime && count > maxCount)
                 {
                     maxPrime = sum;
                     maxCount = count;
                 }
-                sum = 0;
+                
+                sum -= primes.get(actualStartIndex);
+                currStartIndex = pIndex;
+                
+                actualStartIndex--;
             }
-
-//            System.out.println(currPrimeIndex);
-
         }
 
         System.out.println("Max: " + maxPrime);
