@@ -19,7 +19,7 @@ public class PackageGenerator
 
     public static void main(String[] args)
     {
-        createPackagesAndFiles(SRC_FOLDER, 43, 51, true);
+        createPackagesAndFiles(SRC_FOLDER, 51, 100, false);
     }
 
     private static void createPackagesAndFiles(File folder, int start, int end, boolean forceOverwrite)
