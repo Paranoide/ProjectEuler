@@ -48,5 +48,10 @@ public class Divisors
         
         return divs;
     }
+    
+    public static long gcd(long a, long b)
+    {
+        return (b == 0) ? Math.abs(a) : Math.abs(gcd(b, a % b));
+    }
 
 }
