@@ -39,7 +39,7 @@ public class Problem0053
         {
             for (int k = 0; k <= n; k++)
             {
-                result = nChooseK2(n, k);
+                result = nChooseK(n, k);
                 if (result.compareTo(MILLION) > 0)
                 {
                     counter++;
@@ -55,6 +55,11 @@ public class Problem0053
     
     private static BigInteger nChooseK(int n, int k)
     {
+        if (n < 2*k)
+        {
+            return nChooseK(n, n-k);
+        }
+        
         BigInteger numerator, denominator;
         numerator = denominator = BigInteger.ONE;
         int maxFactors = k;
