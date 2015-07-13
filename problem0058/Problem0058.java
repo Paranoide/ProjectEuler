@@ -36,12 +36,6 @@ public class Problem0058
     {
         long time = System.currentTimeMillis();
 
-//        boolean[] ps = sieve(1000000);
-
-        long maxPrime = 1000000;
-        PrimeGenerator pg = new PrimeGenerator();
-        List<Long> primes = pg.generatePrimesSmallerThanN(maxPrime);
-
         double perc = 1.0;
 //        int[] corners = new int[4];
         int corner;
@@ -55,13 +49,7 @@ public class Problem0058
             {
                 corner = 4 * (n * n + n) + 2 * (c + 1) * (n + 1) + 1;
 
-                if (corner >= maxPrime)
-                {
-                    maxPrime = (long)(corner * 1.1);
-                    primes = pg.generatePrimesSmallerThanN(maxPrime);
-                }
-
-                if (contains(primes, corner))
+                if (PrimeGenerator.rudimentalIsPrime(corner))
                 {
                     primeCount++;
                 }
@@ -71,11 +59,6 @@ public class Problem0058
             n++;
 
             perc = 1.0 * primeCount / totalCount;
-            System.out.println("PrimeCount: " + primeCount);
-            System.out.println("TotalCount: " + totalCount);
-            System.out.println(perc);
-            System.out.println(maxPrime);
-            System.out.println();
         }
 
         System.out.println("Side length: " + (2 * n + 1));
@@ -84,8 +67,4 @@ public class Problem0058
         System.out.println("Time: " + (System.currentTimeMillis() - time));
     }
 
-    private static boolean contains(List<Long> primes, long prime)
-    {
-        return Collections.binarySearch(primes, prime) >= 0;
-    }
 }
