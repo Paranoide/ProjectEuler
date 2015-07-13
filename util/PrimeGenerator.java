@@ -161,4 +161,25 @@ public class PrimeGenerator
 
         return factors;
     }
+    
+    
+    public static boolean rudimentalIsPrime(long prime)
+    {
+        if (prime % 2 == 0)
+        {
+            return false;
+        }
+        else
+        {
+            int sqrt = (int)Math.sqrt(prime) + 1;
+            for (int t = 3; t < sqrt; t += 2)
+            {
+                if (prime % t == 0)
+                {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
 }
