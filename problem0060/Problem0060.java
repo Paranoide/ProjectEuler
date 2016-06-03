@@ -20,110 +20,115 @@ import util.PrimeGenerator;
 public class Problem0060
 {
 
+    private static final int N = 5;
+    private static PrimeGenerator pg;
+    private static List<Long> primes;
+    
     public static void main(String[] args)
     {
         long time = System.currentTimeMillis();
-
-        final int N = 4;
-
-        long maxPrime = 100;
-        PrimeGenerator pg = new PrimeGenerator();
-        List<Long> primes = pg.generatePrimesSmallerThanN(maxPrime);
+        
+        long sum = 0;
 
         int[] indices = new int[N];
         for (int t = 0; t < N; t++)
         {
-            indices[t] = t;
+            indices[t] = -1;
         }
-        long[] diffs = new long[N];
+        indices[N-1] = N-2;
+        
+        pg = new PrimeGenerator();
 
         boolean found = false;
-        int lowestIndex = 0;
-        long prime;
-
         while (!found)
         {
-            Arrays.fill(diffs, 0);
-            for (int i = 0; i < N - 1; i++)
-            {
-                if (indices[i] != indices[i + 1] - 1)
-                {
-                    diffs[i] = primes.get(indices[i] + 1) - primes.get(indices[i]);
-                }
-            }
-            diffs[N - 1] = primes.get(indices[N - 1] + 1) - primes.get(indices[N - 1]);
-
-            lowestIndex = getIndexWithLowestDiff(diffs);
-
-            if (lowestIndex >= 0)
-            {
-                indices[lowestIndex]++;
-            }
-            else
-            {
-                throw new RuntimeException("lowestIndex: " + lowestIndex
-                        + " at indices: " + Arrays.toString(indices));
-            }
-
-            if (indices[N - 1] >= primes.size())
-            {
-                maxPrime *= 1.1;
-                primes = pg.generatePrimesSmallerThanN(maxPrime);
-            }
-            
-            if (areConcatenablePrimes(indices, primes, pg))
-            {
-                found = true;
-            }
-
-            found = true;
+            indices[N-1]++;
+            primes = pg.generateFirstNPrimes(indices[N-1]+1);
+            found = find(indices, 0);
         }
         
-        long sum = 0;
-        long[] ps = new long[N];
         for (int t = 0; t < N; t++)
         {
-            ps[t] = primes.get(indices[t]);
-            sum += ps[t];
+            sum += primes.get(indices[t]);
+            System.out.println(primes.get(indices[t]));
         }
-        System.out.println(Arrays.toString(ps));
         System.out.println("Sum: " + sum);
+        
 
         System.out.println();
         System.out.println("Time: " + (System.currentTimeMillis() - time));
     }
-
-    private static int getIndexWithLowestDiff(long[] diffs)
+    
+    public static boolean find(int[] indices, int depth)
     {
-        int lowest = -1;
-        long diff, lowestDiff = Long.MAX_VALUE;
-
-        for (int t = 0; t < diffs.length; t++)
+        if (depth == N-1)
         {
-            diff = diffs[t];
-            if (diff > 0 && diff < lowestDiff)
+            return true;
+        }
+        
+        int start = 0;
+        if (depth > 0)
+        {
+            start = indices[depth-1] + 1;
+        }
+        int lastIndex = indices[N-1];
+        boolean success = false;
+        for (int t = start; t < lastIndex - (N-1) + depth && !success; t++)
+        {
+            indices[depth] = t;
+            if (checkConcatenations(indices, depth))
             {
-                lowestDiff = diff;
-                lowest = t;
+                success = find(indices, depth+1);
             }
         }
-
-        return lowest;
+        
+        return success;
     }
-
-    private static boolean areConcatenablePrimes(int[] indices,
-                                                List<Long> primes,
-                                                PrimeGenerator pg)
+    
+    private static boolean checkConcatenations(int[] indices, int indexIndex)
     {
-        int n = indices.length;
-        long[] corrPrimes = new long[n];
-
-        for (int t = 0; t < n; t++)
+        boolean success = true;
+        long p1, p2 = primes.get(indices[indexIndex]);
+        for (int t = 0; t < indexIndex && success; t++)
         {
-            corrPrimes[t] = primes.get(indices[t]);
+            p1 = primes.get(indices[t]);
+            success = checkConcatenations(p1, p2);
         }
-
-        return corrPrimes[n - 1] == 0 ? null : corrPrimes;
+        
+        if (success)
+        {
+            p1 = primes.get(indices[N-1]);
+            success = checkConcatenations(p1, p2);
+        }
+        
+        return success;
     }
-
+    
+    private static boolean checkConcatenations(long p1, long p2)
+    {
+        int p1Len = length(p1);
+        int p2Len = length(p2);
+        // p1 = 23, p2 = 113
+        // p1Len = 2, p2Len = 3
+        // concat1 = 23113 = 10^(p2Len)*p1 + p2 = 10^3*23 + 113 = 23000 + 113 = 23113
+        // concat2 = 11323 = 10^(p1Len)*p2 + p1 = 10^2*113 + 23 = 11300 + 23  = 11323
+        long concat1 = ((long)Math.pow(10, p2Len))*p1 + p2;
+        long concat2 = ((long)Math.pow(10, p1Len))*p2 + p1;
+        
+        boolean isPrime1 = pg.isPrime(concat1);
+        boolean isPrime2 = pg.isPrime(concat2);
+        
+        return isPrime1 && isPrime2;
+    }
+    
+    private static int length(long l)
+    {
+        int length = 0;
+        while (l != 0)
+        {
+            l /= 10;
+            length++;
+        }
+        return length;
+    }
 }
