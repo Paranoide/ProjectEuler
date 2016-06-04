@@ -1,6 +1,5 @@
 package problem0060;
 
-import java.util.Arrays;
 import java.util.List;
 import util.PrimeGenerator;
 
