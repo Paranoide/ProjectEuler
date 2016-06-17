@@ -1,110 +1,55 @@
 package problem0069;
 
-import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.List;
-import util.Divisors;
+import util.PrimeGenerator;
 
 /**
  *
- * 2,3,4,5,6,7,8,9,10,12,14,15,16,17,18,20,21,22,24,25,26,27,28
- * 32,33,34,35,36,38,39,40,42,44,45,46,47,48,49,50,51,52,54,55,56,57,58
+ * 
  * @author micmeyer
  */
 public class Problem0069
 {
-    private static final int N = 1000;
-    private static int[] coprimes;
+    private static final int N = 1000000;
     
     public static void main(String[] args)
     {
         long time = System.currentTimeMillis();
         
-        coprimes = new int[N];
-        for (int t = 0; t < N; t++)
+        double ratio, maxRatio = 0;
+        int maxRatioN = 0;
+        int coprime;
+        for (int n = 1; n <= N; n++)
         {
-            coprimes[t] = -1;
-        }
-        
-        int tmpN, c;
-        for (int n = 2; n <= N; n++)
-        {
-            if (n % 1000 == 0)
+            List<Long> facs = PrimeGenerator.getPrimeFactors(n);
+            coprime = calculatePhi(n, facs);
+            ratio = 1.0*n/coprime;
+            if (ratio > maxRatio)
             {
-                System.out.println(n);
-            }
-            if (phi(n) < 0)
-            {
-                List<Integer> co = calculateCoprimes(n);
-                Integer coprimeCount = co.size() + 1;
-                coprimes[n-1] = coprimeCount;
-
-                tmpN = 0;
-                Iterator<Integer> it = co.iterator();
-                boolean done = false;
-                
-                
-                
-                while (it.hasNext() && !done)
-                {
-                    c = it.next();
-                    tmpN = c*n;
-                    if (tmpN-1 < N)
-                    {
-                        coprimes[tmpN-1] = phi(c)*phi(n);
-                    }
-                    else
-                    {
-                        done = true;
-                    }
-                }
-                
+                maxRatio = ratio;
+                maxRatioN = n;
             }
         }
         
-        double max = 0;
-        int maxN = 0;
-        for (int t = 0; t < N; t++)
-        {
-            double ratio = 1.0*(t+1)/coprimes[t];
-            if (ratio > max)
-            {
-                max = ratio;
-                maxN = t+1;
-            }
-            
-            System.out.printf("%3d: %d (%f)\n", t+1, coprimes[t], ratio);
-        }
-        System.out.printf("Max: %f at %d\n", max, maxN);
-        
-        System.out.println(calculateCoprimes(30));
-        System.out.println(calculateCoprimes(60));
-        System.out.println(calculateCoprimes(90));
-        System.out.println(calculateCoprimes(270));
-        System.out.println(calculateCoprimes(210));
-        
+        System.out.println("Result: " + maxRatioN);
         System.out.println();
         System.out.println("Time: " + (System.currentTimeMillis()-time));
     }
     
-    private static int phi(int n)
+    private static int calculatePhi(int n, List<Long> primeFactors)
     {
-        return coprimes[n-1];
-    }
-    
-    private static List<Integer> calculateCoprimes(int i)
-    {
-        List<Integer> co = new LinkedList<>();
-        
-        for (int t = 2; t < i; t++)
+        long lastFac = 0, fac;
+        double phi = n;
+        for (int t = 0; t < primeFactors.size(); t++)
         {
-            if (Divisors.gcd(t, i) == 1)
+            fac = primeFactors.get(t);
+            if (fac != lastFac)
             {
-                co.add(t);
+                phi *= (1.0 - 1.0/fac);
+                lastFac = fac;
             }
         }
-        
-        return co;
+        return (int)(phi + 0.5);
     }
     
 }
