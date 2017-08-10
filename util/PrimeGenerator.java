@@ -1,8 +1,10 @@
 package util;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 /**
  *
@@ -13,6 +15,7 @@ import java.util.List;
 public class PrimeGenerator
 {
     private final List<Long> primes = new ArrayList<>();
+    private final Map<Long, List<Long>> primeFactors = new HashMap<>();
 
     private long p = 5;
     private boolean pDeltaIsTwo = true;
@@ -163,6 +166,70 @@ public class PrimeGenerator
         {
             factors.add(n);
         }
+
+        return factors;
+    }
+
+    public List<Long> getPrimeFactorsCached(final long N)
+    {
+        List<Long> factors = new ArrayList<>();
+
+        long n = N;
+
+        long sqrt = (long) Math.sqrt(n);
+
+        while (n > 1 && n % 2 == 0)
+        {
+            factors.add(2L);
+
+            n = n >> 1;
+
+            List<Long> cachedFactors = this.primeFactors.get(n);
+            if (cachedFactors != null)
+            {
+                factors.addAll(cachedFactors);
+                primeFactors.put(N, factors);
+                return factors;
+            }
+        }
+
+        int primeListIndex = 1;
+
+        this.generatePrimesSmallerThanN(sqrt + 1);
+        if (this.primes.get(this.primes.size() - 1) <= sqrt)
+        {
+            this.calcNextPrime();
+            this.calcNextPrime();
+        }
+
+        long _p = 3;
+        while (_p <= sqrt && n > 1)
+        {
+            if (n % _p == 0)
+            {
+                factors.add(_p);
+                n /= _p;
+
+                List<Long> cachedFactors = this.primeFactors.get(n);
+                if (cachedFactors != null)
+                {
+                    factors.addAll(cachedFactors);
+                    primeFactors.put(N, factors);
+                    return factors;
+                }
+            }
+            else
+            {
+                _p = this.primes.get(++primeListIndex);
+            }
+        }
+
+        if (n > 1)
+        {
+            factors.add(n);
+        }
+
+        primeFactors.put(N, factors);
 
         return factors;
     }
