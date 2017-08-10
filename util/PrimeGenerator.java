@@ -2,7 +2,6 @@ package util;
 
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -13,10 +12,11 @@ import java.util.List;
  */
 public class PrimeGenerator
 {
-
     private final List<Long> primes = new ArrayList<>();
 
-    private long p = 0;
+    private long p = 5;
+    private boolean pDeltaIsTwo = true;
+
     private int index = 0;
 
     public PrimeGenerator()
@@ -32,7 +32,6 @@ public class PrimeGenerator
             this.calcNextPrime();
         }
 
-
         List<Long> thePrimes = new ArrayList<>();
         thePrimes.addAll(this.primes);
         int tooMuch = thePrimes.size() - n;
@@ -41,7 +40,7 @@ public class PrimeGenerator
             thePrimes.remove(thePrimes.size() - 1);
             tooMuch--;
         }
-        
+
         return thePrimes;
     }
 
@@ -52,24 +51,18 @@ public class PrimeGenerator
             this.calcNextPrime();
         }
 
-
         List<Long> thePrimes = new ArrayList<>();
         thePrimes.addAll(this.primes);
 
-        int size = thePrimes.size();
-        if (thePrimes.get(size - 2) >= n)
-        {
-            thePrimes.remove(size - 1);
-            thePrimes.remove(size - 2);
-        }
-        else if (thePrimes.get(size - 1) >= n)
+        int size;
+        while ((size = thePrimes.size()) > 0 && thePrimes.get(size - 1) >= n)
         {
             thePrimes.remove(size - 1);
         }
-        
+
         return thePrimes;
     }
-    
+
     public long next()
     {
         while (this.index >= this.primes.size())
@@ -78,31 +71,36 @@ public class PrimeGenerator
         }
         return this.primes.get(index++);
     }
-    
+
     public boolean isPrime(long n)
     {
-        long sqrt = (long)(Math.sqrt(n) + 1);
-        this.generatePrimesSmallerThanN((long)(sqrt + 1));
+        long sqrt = (long) (Math.sqrt(n) + 1);
+        this.generatePrimesSmallerThanN(sqrt + 1);
         return this.isPrimeNumber(n);
     }
-    
+
+    /**
+     * Calculates the next prime number for the internal list.
+     */
     private void calcNextPrime()
     {
         boolean done = false;
         while (!done)
         {
-            p += 6;
-            if (isPrimeNumber(p - 1))
+            if (isPrimeNumber(p))
             {
-                this.primes.add(p - 1);
+                this.primes.add(p);
                 done = true;
             }
-            if (isPrimeNumber(p + 1))
-            {
-                this.primes.add(p + 1);
-                done = true;
-            }
+
+            this.nextP();
         }
+    }
+
+    private void nextP()
+    {
+        p += this.pDeltaIsTwo ? 2 : 4;
+        this.pDeltaIsTwo = !this.pDeltaIsTwo;
     }
 
     private boolean isPrimeNumber(long n)
@@ -128,7 +126,7 @@ public class PrimeGenerator
         return true;
     }
 
-    public static List<Long> getPrimeFactors(long n)
+    public List<Long> getPrimeFactors(long n)
     {
         List<Long> factors = new ArrayList<>();
 
@@ -137,21 +135,28 @@ public class PrimeGenerator
         while (n > 1 && n % 2 == 0)
         {
             factors.add(2L);
-            n /= 2;
+            n = n >> 1;
         }
 
-        long p = 3;
-        while (p <= sqrt && n > 1)
+        int primeListIndex = 1;
+
+        this.generatePrimesSmallerThanN(sqrt + 1);
+        if (this.primes.get(this.primes.size() - 1) <= sqrt)
         {
-            if (n % p == 0)
+            this.calcNextPrime();
+            this.calcNextPrime();
+        }
+
+        long _p = 3;
+        while (_p <= sqrt && n > 1)
+        {
+            if (n % _p == 0)
             {
-                factors.add(p);
-                n /= p;
+                factors.add(_p);
+                n /= _p;
             }
             else
-            {
-                p += 2;
-            }
+                _p = this.primes.get(++primeListIndex);
         }
 
         if (n > 1)
@@ -161,8 +166,7 @@ public class PrimeGenerator
 
         return factors;
     }
-    
-    
+
     public static boolean rudimentalIsPrime(long prime)
     {
         if (prime % 2 == 0)
@@ -171,7 +175,7 @@ public class PrimeGenerator
         }
         else
         {
-            int sqrt = (int)Math.sqrt(prime) + 1;
+            int sqrt = (int) Math.sqrt(prime) + 1;
             for (int t = 3; t < sqrt; t += 2)
             {
                 if (prime % t == 0)

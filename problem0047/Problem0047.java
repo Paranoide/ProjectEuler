@@ -35,10 +35,12 @@ public class Problem0047
         List<Long> list;
         boolean found = false;
         int n = 1, count;
-        
+
+        PrimeGenerator pg = new PrimeGenerator();
+
         while (!found)
         {
-            list = PrimeGenerator.getPrimeFactors(n);
+            list = pg.getPrimeFactors(n);
             count = countDistinctPrimeFactors(list);
             enqueueFactorCount(count);
             if (lastNFactorsAllEqualToK(N))

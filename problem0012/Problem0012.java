@@ -3,7 +3,6 @@ package problem0012;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import util.PrimeGenerator;
@@ -37,12 +36,11 @@ public class Problem0012
     public static void main(String[] args)
     {
         long time = System.currentTimeMillis();
-        
+
         int n = 1;
         long count = 0;
         long tri = 0;
-        
-        
+
         while (count < 500)
         {
             tri += n;
@@ -51,7 +49,7 @@ public class Problem0012
 
             n++;
         }
-        
+
         System.out.println(tri);
 
         System.out.println("Time: " + (System.currentTimeMillis() - time));
@@ -62,13 +60,13 @@ public class Problem0012
         return nth * (nth + 1) / 2;
     }
 
-    
     public static long countDivisors(long n)
     {
         long count;
 
-        List<Long> primes = PrimeGenerator.getPrimeFactors(n);
+        PrimeGenerator pg = new PrimeGenerator();
 
+        List<Long> primes = pg.getPrimeFactors(n);
 
         Collection<Long> exponents = generatePrimeExponentMap(primes).values();
 
