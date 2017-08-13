@@ -253,4 +253,20 @@ public class PrimeGenerator
         }
         return true;
     }
+
+    public static int calculatePhi(int n, List<Long> primeFactors)
+    {
+        long lastFac = 0, fac;
+        double phi = n;
+        for (int t = 0; t < primeFactors.size(); t++)
+        {
+            fac = primeFactors.get(t);
+            if (fac != lastFac)
+            {
+                phi *= (1.0 - 1.0 / fac);
+                lastFac = fac;
+            }
+        }
+        return (int) (phi + 0.5);
+    }
 }
