@@ -170,6 +170,15 @@ public class PrimeGenerator
         return factors;
     }
 
+    /**
+     * Reuses already calculated results. It showed to be faster than
+     * the normal getPrimeFactors() method when N is betting bigger than
+     * about some millions. For example, it's slower for N == 1.000.000 but
+     * faster for N == 10.000.000. But results may vary on different machines.
+     *
+     * @param N The number for which the prime factors should be determined
+     * @return All the prime factors of N as a List.
+     */
     public List<Long> getPrimeFactorsCached(final long N)
     {
         List<Long> factors = new ArrayList<>();
