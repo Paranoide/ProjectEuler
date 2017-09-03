@@ -16,12 +16,12 @@ public class Divisors
         list.remove(n);
         return list;
     }
-    
+
     public static List<Long> getAllDivisors(long n)
     {
         List<Long> divs = new LinkedList<>();
-        long sqrt = (long)Math.sqrt(n);
-        
+        long sqrt = (long) Math.sqrt(n);
+
         for (long t = 1; t <= sqrt; t++)
         {
             if (n % t == 0)
@@ -29,29 +29,33 @@ public class Divisors
                 divs.add(t);
             }
         }
-        
+
         int t = 0;
         long div;
         int size = divs.size() - 1;
-        for ( ; t < size; t++)
+        for (; t < size; t++)
         {
             div = divs.get(t);
-            divs.add(size+1, n / div);
+            divs.add(size + 1, n / div);
         }
-        
+
         div = divs.get(t);
         if (n / div != div)
         {
-            divs.add(size+1, n / div);
+            divs.add(size + 1, n / div);
         }
-        
-        
+
         return divs;
     }
-    
+
     public static long gcd(long a, long b)
     {
         return (b == 0) ? Math.abs(a) : Math.abs(gcd(b, a % b));
+    }
+
+    public static boolean areCoprime(long a, long b)
+    {
+        return gcd(a, b) == 1;
     }
 
 }
