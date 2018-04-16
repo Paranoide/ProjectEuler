@@ -1,6 +1,7 @@
 package problem0074;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -10,12 +11,17 @@ import java.util.List;
  */
 public class Buckets
 {
+    private static final Condition NO_CONDITION = (int n, int k, int index, int[] currentBuckets) -> true;
+
+    private final int n;
+
     private final int[] buckets;
 
     private List<int[]> allPossibleBuckets;
 
     public Buckets(int n)
     {
+        this.n = n;
         this.buckets = new int[n];
     }
 
@@ -28,6 +34,11 @@ public class Buckets
      */
     public List<int[]> distribute(int k)
     {
+        return this.distribute(k, NO_CONDITION);
+    }
+
+    public List<int[]> distribute(int k, Condition preCondition)
+    {
         this.allPossibleBuckets = new ArrayList<>();
 
         ActionPerBucketDistribution action = (int[] buckets1) ->
@@ -37,7 +48,7 @@ public class Buckets
             allPossibleBuckets.add(bucketsCopy);
         };
 
-        this.distribute(k, action);
+        this.distribute(k, action, preCondition);
 
         return this.allPossibleBuckets;
     }
@@ -51,22 +62,34 @@ public class Buckets
      */
     public void distribute(int k, ActionPerBucketDistribution action)
     {
-        this.distribute(k, 0, action);
+        this.distribute(k, 0, action, NO_CONDITION);
     }
 
-    private void distribute(int k, int index, ActionPerBucketDistribution action)
+    public void distribute(int k, ActionPerBucketDistribution action, Condition preCondition)
     {
-        if (index == this.buckets.length - 1)
+        this.distribute(k, 0, action, preCondition);
+    }
+
+    private void distribute(int k, int index, ActionPerBucketDistribution action, Condition preCondition)
+    {
+        if (!preCondition.accept(this.n, k, index, this.buckets))
+            return;
+
+        if (index == this.buckets.length)
+        {
+            action.action(this.buckets);
+        }
+        else if (index == this.buckets.length - 1)
         {
             this.buckets[index] = k;
-            action.action(this.buckets);
+            this.distribute(k, index + 1, action, preCondition);
         }
         else
         {
             for (int kForBucket = 0; kForBucket <= k; kForBucket++)
             {
                 this.buckets[index] = kForBucket;
-                this.distribute(k - kForBucket, index + 1, action);
+                this.distribute(k - kForBucket, index + 1, action, preCondition);
             }
         }
     }
@@ -74,5 +97,34 @@ public class Buckets
     public static interface ActionPerBucketDistribution
     {
         public void action(int[] buckets);
+    }
+
+    public static interface Condition
+    {
+        public boolean accept(int n, int k, int index, int[] currentBuckets);
+    }
+
+    public static void main(String[] args)
+    {
+        final int N = 8;
+
+        Buckets buckets = new Buckets(N);
+
+        Condition preCondition = (int n, int k, int index, int[] currentBuckets) ->
+        {
+            boolean descending = (index < 2 || (currentBuckets[index - 2] >= currentBuckets[index - 1]));
+            boolean smallerThanN = (index < 1 || currentBuckets[index - 1] < n);
+
+            return descending && smallerThanN;
+        };
+
+        List<int[]> results = buckets.distribute(N, preCondition);
+
+        System.out.println("Result: " + results.size());
+
+        for (int[] result : results)
+        {
+            System.out.println(Arrays.toString(result));
+        }
     }
 }
