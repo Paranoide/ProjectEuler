@@ -2,7 +2,7 @@ package problem0086;
 
 /**
  *
- *
+ * Better see https://projecteuler.net/problem=86 for a picture.
  *
  * @author micmeyer
  */
