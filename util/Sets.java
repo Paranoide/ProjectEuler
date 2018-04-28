@@ -12,8 +12,6 @@ import java.util.Set;
  */
 public class Sets
 {
-    private static int counter = 0;
-
     public static <T> List<Set<T>> findAllSubsetsOfLengthN(Collection<T> elements, int n)
     {
         int size = elements.size();
@@ -38,7 +36,6 @@ public class Sets
             for (int index : indices)
                 subset.add(elements.get(index));
             subsets.add(subset);
-            counter++;
 
             return;
         }
