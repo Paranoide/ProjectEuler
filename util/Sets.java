@@ -51,16 +51,4 @@ public class Sets
             findAllSubsetsOfLengthNRec(elements, n, subsets, indices, depth + 1, t + 1, size);
         }
     }
-
-    public static void main(String[] args)
-    {
-        List<Integer> list = new ArrayList<>();
-        for (int t = 0; t < 10; t++)
-            list.add(t);
-
-        List<Set<Integer>> allSubsets = findAllSubsetsOfLengthN(list, 6);
-
-        for (Set<Integer> subset : allSubsets)
-            System.out.println(subset);
-    }
 }
