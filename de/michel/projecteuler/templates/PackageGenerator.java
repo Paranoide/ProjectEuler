@@ -13,13 +13,13 @@ import java.io.IOException;
 public class PackageGenerator
 {
 
-    private static final File SRC_FOLDER = new File(System.getProperty("user.dir") + "/src");
+    private static final File SRC_FOLDER = new File(System.getProperty("user.dir") + "/de/michel/projecteuler");
 
     private static final File TEMPLATE_FILE = new File(SRC_FOLDER.getAbsolutePath() + "/templates/ProblemTemplate.java");
 
     public static void main(String[] args)
     {
-        createPackagesAndFiles(SRC_FOLDER, 51, 100, false);
+        createPackagesAndFiles(SRC_FOLDER, 101, 200, false);
     }
 
     private static void createPackagesAndFiles(File folder, int start, int end, boolean forceOverwrite)
