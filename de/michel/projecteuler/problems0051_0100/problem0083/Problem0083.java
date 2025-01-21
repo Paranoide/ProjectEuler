@@ -1,13 +1,12 @@
 package de.michel.projecteuler.problems0051_0100.problem0083;
 
 import de.michel.projecteuler.problems0051_0100.problem0081.MatrixReader;
+import de.michel.projecteuler.util.FileReading;
 
 import java.io.File;
-import java.net.URL;
 import java.util.TreeSet;
 
 /**
- *
  * In the 5 by 5 matrix below, the minimal path sum from the top left to the bottom right,
  * by moving left, right, up, and down, is indicated in bold and is equal to 2297.
  * <table>
@@ -24,18 +23,7 @@ import java.util.TreeSet;
  */
 public class Problem0083
 {
-    private static final File MATRIX_FILE;
-
-    static
-    {
-        String fileName = "matrix.txt";
-
-        URL resource = Problem0083.class.getResource(fileName);
-        if (resource == null)
-            throw new IllegalArgumentException(fileName + " could not be found.");
-
-        MATRIX_FILE = new File(resource.getFile());
-    }
+    private static final File MATRIX_FILE = FileReading.getFile(Problem0083.class, "matrix.txt");
 
     private static int[][] matrix;
     private static int[][] minMatrix;

@@ -1,27 +1,24 @@
 package de.michel.projecteuler.problems0051_0100.problem0089;
 
+import de.michel.projecteuler.util.FileReading;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- *
  * @author Michel Meyer <micmeyer@uos.de>
  */
 public class RomanNumeralsFileReader
 {
+    private static final String FILE_NAME = "roman.txt";
+
     public static List<String> getRomanNumerals()
     {
-        String fileName = "roman.txt";
-
-        URL resource = RomanNumeralsFileReader.class.getResource(fileName);
-        if (resource == null)
-            throw new IllegalArgumentException(fileName + " could not be found.");
-        File file = new File(resource.getFile());
+        File file = FileReading.getFile(RomanNumeralsFileReader.class, FILE_NAME);
 
         List<String> numerals = new ArrayList<>(1000);
 

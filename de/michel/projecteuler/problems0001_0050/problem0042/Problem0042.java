@@ -1,16 +1,14 @@
 package de.michel.projecteuler.problems0001_0050.problem0042;
 
-import de.michel.projecteuler.problems0001_0050.problem0022.Problem0022;
+import de.michel.projecteuler.util.FileReading;
 
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-import java.net.URL;
 import java.util.Arrays;
 
 /**
- *
  * The nth term of the sequence of triangle numbers is given by, tn = ½*n*(n+1);
  * so the first ten triangle numbers are:
  * <pre>
@@ -30,54 +28,50 @@ import java.util.Arrays;
  */
 public class Problem0042
 {
+    private static final String FILE_NAME = "words.txt";
 
     public static void main(String[] args)
     {
         long time = System.currentTimeMillis();
 
-        String fileName = "words.txt";
-
-        URL resource = Problem0042.class.getResource(fileName);
-        if (resource == null)
-            throw new IllegalArgumentException(fileName + " could not be found.");
-        File file = new File(resource.getFile());
+        File file = FileReading.getFile(Problem0042.class, FILE_NAME);
 
         String[] words = readWords(file);
-        
+
         int count = 0;
-        
-        for (String word: words)
+
+        for (String word : words)
         {
             if (isTriangleNumber(getWordValue(word)))
             {
                 count++;
             }
         }
-        
+
         System.out.println("Count: " + count);
-        
+
         System.out.println();
-        System.out.println("Time: " + (System.currentTimeMillis()-time));
+        System.out.println("Time: " + (System.currentTimeMillis() - time));
     }
-    
+
     private static boolean isTriangleNumber(int n)
     {
-        int tn = (int)Math.sqrt(2*n + 0.25);
-        
+        int tn = (int) Math.sqrt(2 * n + 0.25);
+
         return (smallGauss(tn) == n);
     }
-    
+
     private static int smallGauss(int n)
     {
-        return (n*(n+1))/2;
+        return (n * (n + 1)) / 2;
     }
-    
+
     private static int getWordValue(String word)
     {
         int value = 0;
         for (int t = 0; t < word.length(); t++)
         {
-            value += (int)(word.charAt(t) - 'A' + 1);
+            value += (int) (word.charAt(t) - 'A' + 1);
         }
         return value;
     }

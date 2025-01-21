@@ -1,7 +1,8 @@
 package de.michel.projecteuler.problems0051_0100.problem0096;
 
+import de.michel.projecteuler.util.FileReading;
+
 import java.io.File;
-import java.net.URL;
 import java.util.List;
 
 /**
@@ -9,12 +10,13 @@ import java.util.List;
  */
 public class Problem0096
 {
+    private static final String FILE_NAME = "p096_sudoku.txt";
 
     public static void main(String[] args)
     {
         long time = System.currentTimeMillis();
 
-        File sudokuFile = getSudokuFile("p096_sudoku.txt");
+        File sudokuFile = FileReading.getFile(Problem0096.class, FILE_NAME);
 
         List<Sudoku> sudokus = SudokuLoader.loadFrom(sudokuFile);
 
@@ -34,15 +36,6 @@ public class Problem0096
         System.out.println("Result: " + result);
         System.out.println();
         System.out.println("Time: " + (System.currentTimeMillis() - time));
-    }
-
-    private static File getSudokuFile(String fileName)
-    {
-        URL resource = Problem0096.class.getResource(fileName);
-        if (resource == null)
-            throw new IllegalArgumentException("File " + fileName + " not found.");
-
-        return new File(resource.getFile());
     }
 
     private static int getFirst3DigitsAsNumber(Sudoku sudoku)

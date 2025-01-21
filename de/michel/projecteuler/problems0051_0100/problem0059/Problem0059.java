@@ -1,17 +1,17 @@
 package de.michel.projecteuler.problems0051_0100.problem0059;
 
+import de.michel.projecteuler.util.FileReading;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-import java.net.URL;
 
 /**
- *
  * Each character on a computer is assigned a unique code and the preferred
  * standard is ASCII (American Standard Code for Information Interchange). For
  * example, uppercase A = 65, asterisk (*) = 42, and lowercase k = 107.
- *
+ * <p>
  * A modern encryption method is to take a text file, convert the bytes to
  * ASCII, then XOR each byte with a given value, taken from a secret key. The
  * advantage with the XOR function is that using the same encryption key on the
@@ -39,6 +39,7 @@ import java.net.URL;
  */
 public class Problem0059
 {
+    private static final String FILE_NAME = "cipher.txt";
 
     public static void main(String[] args)
     {
@@ -107,14 +108,9 @@ public class Problem0059
 
     private static char[] readCipher()
     {
+        File file = FileReading.getFile(Problem0059.class, FILE_NAME);
+
         char[] cipher = null;
-
-        String fileName = "cipher.txt";
-
-        URL resource = Problem0059.class.getResource(fileName);
-        if (resource == null)
-            throw new IllegalArgumentException(fileName + " could not be found.");
-        File file = new File(resource.getFile());
 
         try (BufferedReader br = new BufferedReader(new FileReader(file)))
         {

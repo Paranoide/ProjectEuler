@@ -1,15 +1,15 @@
 package de.michel.projecteuler.problems0001_0050.problem0022;
 
+import de.michel.projecteuler.util.FileReading;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-import java.net.URL;
 import java.util.Collections;
 import java.util.List;
 
 /**
- *
  * Using names.txt, a 46K text file
  * containing over five-thousand first names, begin by sorting it into
  * alphabetical order. Then working out the alphabetical value for each name,
@@ -26,6 +26,7 @@ import java.util.List;
  */
 public class Problem0022
 {
+    private static final String FILE_NAME = "names.txt";
 
     public static void main(String[] args)
     {
@@ -57,13 +58,7 @@ public class Problem0022
 
     private static String[] readNames()
     {
-        String fileName = "names.txt";
-
-        URL resource = Problem0022.class.getResource(fileName);
-        if (resource == null)
-            throw new IllegalArgumentException(fileName + " could not be found.");
-        File file = new File(resource.getFile());
-        System.out.println(file.getAbsolutePath());
+        File file = FileReading.getFile(Problem0022.class, FILE_NAME);
 
         String content = null;
         try (BufferedReader br = new BufferedReader(new FileReader(file)))

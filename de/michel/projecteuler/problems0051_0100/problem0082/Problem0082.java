@@ -1,12 +1,11 @@
 package de.michel.projecteuler.problems0051_0100.problem0082;
 
 import de.michel.projecteuler.problems0051_0100.problem0081.MatrixReader;
+import de.michel.projecteuler.util.FileReading;
 
 import java.io.File;
-import java.net.URL;
 
 /**
- *
  * The minimal path sum in the 5 by 5 matrix below, by starting in any cell in the left column
  * and finishing in any cell in the right column, and only moving up, down, and right, is
  * indicated in bold; the sum is equal to 994.
@@ -24,18 +23,7 @@ import java.net.URL;
  */
 public class Problem0082
 {
-    private static final File MATRIX_FILE;
-
-    static
-    {
-        String fileName = "matrix.txt";
-
-        URL resource = Problem0082.class.getResource(fileName);
-        if (resource == null)
-            throw new IllegalArgumentException(fileName + " could not be found.");
-
-        MATRIX_FILE = new File(resource.getFile());
-    }
+    private static final File MATRIX_FILE = FileReading.getFile(Problem0082.class, "matrix.txt");
 
     private static int[][] matrix;
     private static int[][] minMatrix;

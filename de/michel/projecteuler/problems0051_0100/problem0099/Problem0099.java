@@ -1,10 +1,11 @@
 package de.michel.projecteuler.problems0051_0100.problem0099;
 
+import de.michel.projecteuler.util.FileReading;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,11 +17,13 @@ import static java.util.function.BinaryOperator.maxBy;
  */
 public class Problem0099
 {
+    private static final String FILE_NAME = "base_exp.txt";
+
     public static void main(String[] args)
     {
         long time = System.currentTimeMillis();
 
-        List<Exp> exps = readFile("base_exp.txt");
+        List<Exp> exps = readFile();
 
         Exp greatest = exps.stream()
                 .reduce(maxBy(comparingDouble(Exp::getLn)))
@@ -32,13 +35,9 @@ public class Problem0099
         System.out.println("Time: " + (System.currentTimeMillis() - time));
     }
 
-    private static List<Exp> readFile(String fileName)
+    private static List<Exp> readFile()
     {
-        URL resource = Problem0099.class.getResource(fileName);
-        if (resource == null)
-            throw new IllegalArgumentException(fileName + " was not found.");
-
-        File file = new File(resource.getFile());
+        File file = FileReading.getFile(Problem0099.class, FILE_NAME);
 
         List<Exp> exps = new ArrayList<>();
 

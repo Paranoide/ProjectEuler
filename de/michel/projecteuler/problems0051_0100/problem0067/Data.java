@@ -1,34 +1,31 @@
 package de.michel.projecteuler.problems0051_0100.problem0067;
 
+import de.michel.projecteuler.util.FileReading;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-import java.net.URL;
 
 /**
- *
  * @author micmeyer
  */
 public class Data
 {
+    private static final String FILE_NAME = "Data";
 
     public static final String RAW_DATA;
-    
+
     static
     {
-        StringBuilder sb = new StringBuilder();
+        File file = FileReading.getFile(Data.class, FILE_NAME);
 
-        String fileName = "Data";
-        URL resource = Data.class.getResource(fileName);
-        if (resource == null)
-            throw new IllegalArgumentException(fileName + " could not be found.");
-        File file = new File(resource.getFile());
+        StringBuilder sb = new StringBuilder();
 
         try (BufferedReader br = new BufferedReader(new FileReader(file)))
         {
             String line;
-            while ( (line = br.readLine()) != null)
+            while ((line = br.readLine()) != null)
             {
                 sb.append(line);
                 sb.append("\n");
@@ -36,9 +33,9 @@ public class Data
         }
         catch (IOException ioe)
         {
-            
+            throw new RuntimeException(ioe);
         }
-        
+
         RAW_DATA = sb.toString();
     }
 }

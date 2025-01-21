@@ -1,10 +1,11 @@
 package de.michel.projecteuler.problems0051_0100.problem0054;
 
+import de.michel.projecteuler.util.FileReading;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-import java.net.URL;
 
 /**
  * The file, poker.txt, contains one-thousand random hands dealt to two players.
@@ -20,6 +21,7 @@ import java.net.URL;
  */
 public class Problem0054
 {
+    private static final String FILE_NAME = "poker.txt";
 
     private static enum CardColor
     {
@@ -429,14 +431,9 @@ public class Problem0054
 
     private static String[][] readHands()
     {
+        File file = FileReading.getFile(Problem0054.class, FILE_NAME);
+
         String[][] hands = new String[1000][2];
-
-        String fileName = "poker.txt";
-
-        URL resource = Problem0054.class.getResource(fileName);
-        if (resource == null)
-            throw new IllegalArgumentException(fileName + " could not be found.");
-        File file = new File(resource.getFile());
 
         try (BufferedReader br = new BufferedReader(new FileReader(file)))
         {
